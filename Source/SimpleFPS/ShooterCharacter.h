@@ -9,8 +9,7 @@
 class AGun;
 
 UCLASS()
-class SIMPLEFPS_API AShooterCharacter : public ACharacter
-{
+class SIMPLEFPS_API AShooterCharacter : public ACharacter{
 	GENERATED_BODY()
 
 public:
@@ -31,6 +30,7 @@ public:
 private:
     void MoveForward(float AxisValue);
     void MoveRight(float AxisValue);
+    void Shoot();
 
     UPROPERTY(EditDefaultsOnly)
     TSubclassOf<AGun> GunClass;

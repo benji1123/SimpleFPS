@@ -7,8 +7,7 @@
 #include "MyPawn.generated.h"
 
 UCLASS()
-class SIMPLEFPS_API AMyPawn : public APawn
-{
+class SIMPLEFPS_API AMyPawn : public APawn{
 	GENERATED_BODY()
 
 public:
