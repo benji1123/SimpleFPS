@@ -17,7 +17,7 @@ AGun::AGun(){
 }
 
 void AGun::PullTrigger(){
-    // muzzle-flash emmitter
+    // muzzle-flash
     UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, Mesh, TEXT("MuzzleFlashSocket"));
 
     APawn* OwnerPawn = Cast<APawn>(GetOwner());
@@ -25,6 +25,7 @@ void AGun::PullTrigger(){
     AController* OwnerController = OwnerPawn->GetController();
     if (OwnerController == nullptr) return;
 
+    // viewpoint
     FVector Location;
     FRotator Rotation;
     OwnerController->GetPlayerViewPoint(Location, Rotation);
@@ -35,8 +36,15 @@ void AGun::PullTrigger(){
     bool bSuccess = GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1);
     if(bSuccess){
         DrawDebugPoint(GetWorld(), Hit.Location, 20, FColor::Red, true);
+
         FVector ShotDirection = -Rotation.Vector();
         UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), BulletCollision, Hit.Location, ShotDirection.Rotation());
+        // damage
+        AActor* HitActor = Hit.GetActor();
+        if(HitActor != nullptr){
+            FPointDamageEvent DamageEvent(AGun::Damage, Hit, ShotDirection, nullptr);
+            HitActor->TakeDamage(AGun::Damage, DamageEvent, OwnerController, this);
+        }
     }
 }
 

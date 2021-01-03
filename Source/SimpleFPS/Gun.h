@@ -40,4 +40,7 @@ private:
 
     UPROPERTY(EditAnywhere)
     UParticleSystem* BulletCollision;
+
+    UPROPERTY(EditAnywhere)
+    float Damage = 10;
 };
