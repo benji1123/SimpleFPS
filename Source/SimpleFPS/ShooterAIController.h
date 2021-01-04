@@ -13,5 +13,7 @@ UCLASS()
 class SIMPLEFPS_API AShooterAIController : public AAIController
 {
 	GENERATED_BODY()
-	
+
+protected:
+    virtual void BeginPlay();
 };
