@@ -13,16 +13,30 @@ AShooterCharacter::AShooterCharacter(){
 // Called when the game starts or when spawned
 void AShooterCharacter::BeginPlay(){
 	Super::BeginPlay();
-	// Spawn a rifle at character's weapon-socket
+	Health = MaxHealth;
+	// Give Gun
     Gun = GetWorld()->SpawnActor<AGun>(GunClass);
     ACharacter::GetMesh()->USkinnedMeshComponent::HideBoneByName(TEXT("weapon_r"), EPhysBodyOp::PBO_None);
     Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
     Gun->SetOwner(this);
 }
 
+bool AShooterCharacter::IsDead() const{
+    return Health <= 0;
+}
+
 // Called every frame
 void AShooterCharacter::Tick(float DeltaTime){
 	Super::Tick(DeltaTime);
+}
+
+float AShooterCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const &DamageEvent,
+        class AController *EventInstigator, AActor *DamageCauser){
+    float DamageToApply = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+    DamageToApply = FMath::Min(Health, DamageToApply);
+    Health -= DamageToApply;
+    UE_LOG(LogTemp, Warning, TEXT("Health left %f"), Health);
+    return DamageToApply;
 }
 
 // Called to bind functionality to input
