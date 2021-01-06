@@ -18,4 +18,8 @@ public:
 
 protected:
     virtual void BeginPlay();
+
+private:
+    UPROPERTY(EditAnywhere)
+    class UBehaviorTree* AIBehavior;
 };
